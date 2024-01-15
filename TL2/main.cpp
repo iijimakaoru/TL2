@@ -1,15 +1,31 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include <assert.h>
+
+#include "TextureConverter.h"
+
+#include<wrl.h>
+
+enum Argument {
+	kApplicationPath,
+	kFilePath,
+
+	NnmArgument
+};
+
 int main(int argc, char* argv[])
 {
-	for (int i = 0; i < argc; i++)
-	{
-		// •¶Žš—ñargv‚Ìi”Ô‚ð•\Ž¦
-		printf(argv[i]);
-		// ‰üs
-		printf("\n");
-	}
+	assert(argc >= NnmArgument);
+
+	HRESULT result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+	assert(SUCCEEDED(result));
+
+	TextureConverter converter;
+
+	converter.ConvertTextureWICToDDS(argv[kFilePath]);
+
+	CoUninitialize();
 
 	system("pause");
 	return 0;
