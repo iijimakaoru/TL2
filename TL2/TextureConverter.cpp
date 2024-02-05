@@ -96,7 +96,18 @@ void TextureConverter::SaveDDSTextureToFile(int numOptions, char* options[]) {
 		metadata = scratchImage.GetMetadata();
 	}
 
-	metadata.format = DirectX::MakeSRGB(metadata.format);
+	// à≥èkå`éÆÇ…ïœä∑
+	DirectX::ScratchImage converted;
+	result = DirectX::Compress(
+	    scratchImage.GetImages(), scratchImage.GetImageCount(), metadata,
+	    DXGI_FORMAT_BC7_UNORM_SRGB,
+	    DirectX::TEX_COMPRESS_BC7_QUICK | DirectX::TEX_COMPRESS_SRGB_OUT |
+	        DirectX::TEX_COMPRESS_PARALLEL,
+	    1.0f, converted);
+	if (SUCCEEDED(result)) {
+		scratchImage = std::move(converted);
+		metadata = scratchImage.GetMetadata();
+	}
 
 	std::wstring filePath = directoryPath + fileName + L".dds";
 

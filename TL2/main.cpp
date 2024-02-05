@@ -18,6 +18,8 @@ int main(int argc, char* argv[])
 {
 	if (argc < NnmArgument) {
 		TextureConverter::OutputUsage();
+
+		system("pause");
 		return 0;
 	}
 
@@ -33,6 +35,5 @@ int main(int argc, char* argv[])
 
 	CoUninitialize();
 
-	system("pause");
 	return 0;
 }
