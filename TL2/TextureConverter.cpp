@@ -19,9 +19,7 @@ void TextureConverter::LoadWICTextureFromFile(const std::string& filePath) {
 	SeparateFilePath(wfilePath);
 }
 
-std::wstring TextureConverter::ConvertMultiByteStringToWideString(const std::string& filePath) {
-	std::string mString;
-
+std::wstring TextureConverter::ConvertMultiByteStringToWideString(const std::string& mString) {
 	int filePathBufferSize = MultiByteToWideChar(CP_ACP, 0, mString.c_str(), -1, nullptr, 0);
 
 	std::wstring wString;
@@ -36,7 +34,7 @@ void TextureConverter::SeparateFilePath(const std::wstring& filePath) {
 	size_t pos1;
 	std::wstring exceptExt;
 
-	pos1 = filePath.rfind(',');
+	pos1 = filePath.rfind('.');
 
 	if (pos1 != std::wstring::npos) {
 		fileExt = filePath.substr(pos1 + 1, filePath.size() - pos1 - 1);
@@ -69,7 +67,7 @@ void TextureConverter::SaveDDSTextureToFile() {
 
 	HRESULT result;
 
-	std::wstring filePath = directoryPath + L".dds";
+	std::wstring filePath = directoryPath + fileName + L".dds";
 
 	result = DirectX::SaveToDDSFile(
 	    scratchImage.GetImages(), scratchImage.GetImageCount(), metadata, DirectX::DDS_FLAGS_NONE,
