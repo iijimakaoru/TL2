@@ -16,14 +16,20 @@ enum Argument {
 
 int main(int argc, char* argv[])
 {
-	assert(argc >= NnmArgument);
+	if (argc < NnmArgument) {
+		TextureConverter::OutputUsage();
+		return 0;
+	}
 
 	HRESULT result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 	assert(SUCCEEDED(result));
 
 	TextureConverter converter;
 
-	converter.ConvertTextureWICToDDS(argv[kFilePath]);
+	int numOptions = argc - NnmArgument;
+	char** options = argv + NnmArgument;
+
+	converter.ConvertTextureWICToDDS(argv[kFilePath], numOptions, options);
 
 	CoUninitialize();
 
